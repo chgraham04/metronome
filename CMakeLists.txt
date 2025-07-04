@@ -3,6 +3,7 @@ project(metronome_engine)
 
 set(CMAKE_CXX_STANDARD 17)
 
+# SDL paths
 set(SDL2_PATH "C:/libraries/SDL2/x86_64-w64-mingw32")
 set(SDL2_MIXER_PATH "C:/libraries/SDL2_mixer/x86_64-w64-mingw32")
 
