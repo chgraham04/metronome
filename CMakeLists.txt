@@ -1,19 +1,13 @@
-cmake_minimum_required(VERSION 3.15)
-project(Metronome)
+cmake_minimum_required(VERSION 3.10)
+project(metronome_engine)
 
 set(CMAKE_CXX_STANDARD 17)
 
-# Add vcpkg toolchain file (adjust path if needed)
-if(DEFINED ENV{VCPKG_ROOT})
-    set(CMAKE_TOOLCHAIN_FILE "$ENV{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake"
-            CACHE STRING "")
-endif()
+find_package(SDL2 REQUIRED)
+find_package(SDL2_mixer REQUIRED)
 
-# Find SFML
-find_package(SFML CONFIG REQUIRED COMPONENTS audio)
+include_directories(${SDL2_INCLUDE_DIRS} ${SDL2_MIXER_INCLUDE_DIRS})
 
-# Add your source files
-add_executable(metronome metronome.cpp)
+add_executable(metronome_engine main.cpp metronome.cpp)
 
-# Link SFML
-target_link_libraries(metronome PRIVATE sfml-audio)
+target_link_libraries(metronome_engine ${SDL2_LIBRARIES} ${SDL2_MIXER_LIBRARIES})
