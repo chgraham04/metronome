@@ -33,7 +33,7 @@ void Metronome::cleanUpAudio() {
 }
 
 void Metronome::playTick(bool isAccent) {
-    const char* soundFile = isAccent ? "tock.wav" : "tick.wav";
+    const char* soundFile = isAccent ? "click_1.wav" : "click_2.wav";
     Mix_Chunk* sound = Mix_LoadWAV(soundFile);
     if (!sound) {
         std::cerr << "Failed to load " << soundFile << ": " << Mix_GetError() << std::endl;
