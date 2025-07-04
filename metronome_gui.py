@@ -12,7 +12,7 @@ def start_metronome():
     global process, bpm_value, time_signature
     if process is None:
         num_beats = int(time_signature.split("/")[0])
-        process = subprocess.Popen(["./metronome_engine", str(bpm_value), str(num_beats)])
+        process = subprocess.Popen(["./metronome_engine.exe", str(bpm_value), str(num_beats)])
 
 # Stop the metronome process
 def stop_metronome():
