@@ -5,6 +5,8 @@ import subprocess
 # Globals
 process = None
 bpm_value = 100
+bpm_hold_job = None
+bpm_change_direction = 0
 
 def start_metronome():
     global process
@@ -47,6 +49,49 @@ def toggle_time_signature_state():
     state = "readonly" if accent_enabled.get() else "disabled"
     numerator_dropdown.config(state=state)
     denominator_dropdown.config(state=state)
+
+def toggle_accent_checkbox(event=None):
+    current = accent_enabled.get()
+    accent_enabled.set(not current)
+    toggle_time_signature_state()
+
+def update_bpm(amount):
+    global bpm_value
+    new_bpm = max(0, min(330, bpm_value + amount))
+    if new_bpm != bpm_value:
+        bpm_value = new_bpm
+        bpm_slider.set(bpm_value)
+        bpm_label.config(text=f"{bpm_value} bpm")
+
+def hold_bpm_change():
+    global bpm_hold_job
+    if bpm_change_direction != 0:
+        update_bpm(bpm_change_direction)
+        bpm_hold_job = window.after(50, hold_bpm_change)
+
+def on_arrow_press(event):
+    global bpm_change_direction, bpm_hold_job
+
+    if bpm_hold_job:
+        window.after_cancel(bpm_hold_job)
+
+    if event.keysym == "Up":
+        update_bpm(1)
+        bpm_change_direction = 1
+    elif event.keysym == "Down":
+        update_bpm(-1)
+        bpm_change_direction = -1
+    else:
+        return
+
+    bpm_hold_job = window.after(400, hold_bpm_change)
+
+def on_arrow_release(event):
+    global bpm_hold_job, bpm_change_direction
+    bpm_change_direction = 0
+    if bpm_hold_job:
+        window.after_cancel(bpm_hold_job)
+        bpm_hold_job = None
 
 # --- UI Setup ---
 window = tk.Tk()
@@ -112,8 +157,13 @@ play_btn = tk.Button(
 play_btn.image = play_img
 play_btn.place(relx=0.5, rely=0.63, anchor="center", width=64, height=64)
 
-# Spacebar toggle
+# Key bindings
 window.bind("<space>", lambda e: toggle_metronome())
+window.bind("<Return>", toggle_accent_checkbox)
+window.bind("<Up>", on_arrow_press)
+window.bind("<Down>", on_arrow_press)
+window.bind("<KeyRelease-Up>", on_arrow_release)
+window.bind("<KeyRelease-Down>", on_arrow_release)
 
 # Disable dropdowns if accent is off at startup
 toggle_time_signature_state()
