@@ -43,10 +43,15 @@ def on_bpm_change(val):
     bpm_value = int(float(val))
     bpm_label.config(text=f"{bpm_value} bpm")
 
+def toggle_time_signature_state():
+    state = "readonly" if accent_enabled.get() else "disabled"
+    numerator_dropdown.config(state=state)
+    denominator_dropdown.config(state=state)
+
 # --- UI Setup ---
 window = tk.Tk()
 window.title("Metronome")
-window.geometry("400x250")  # Enough room for everything
+window.geometry("500x360")
 bg_color = "#a3b18a"
 window.configure(bg=bg_color)
 
@@ -56,7 +61,9 @@ accent_enabled = tk.BooleanVar(value=True)
 top_frame = tk.Frame(window, bg=bg_color)
 top_frame.pack(fill=tk.X, pady=(5, 0))
 accent_check = tk.Checkbutton(top_frame, text="*", variable=accent_enabled,
-                              bg=bg_color, font=("Arial", 12), highlightthickness=0, bd=0)
+                              bg=bg_color, font=("Arial", 12),
+                              highlightthickness=0, bd=0,
+                              command=toggle_time_signature_state)
 accent_check.pack(side=tk.LEFT, padx=10)
 
 # BPM label and slider
@@ -91,20 +98,24 @@ denominator_dropdown.grid(row=0, column=2, padx=(8, 0))
 play_img = tk.PhotoImage(file="play.png")
 pause_img = tk.PhotoImage(file="pause.png")
 
-# --- Play/Pause Button (64x64)
+# --- Play/Pause Button (Invisible border, 64x64)
 play_btn = tk.Button(
     window,
     image=play_img,
     command=toggle_metronome,
     relief="flat",
-    borderwidth=4,
+    borderwidth=0,
     bg=bg_color,
-    activebackground=bg_color
+    activebackground=bg_color,
+    highlightthickness=0
 )
 play_btn.image = play_img
-play_btn.place(relx=0.5, rely=0.8, anchor="center", width=64, height=64)
+play_btn.place(relx=0.5, rely=0.63, anchor="center", width=64, height=64)
 
 # Spacebar toggle
 window.bind("<space>", lambda e: toggle_metronome())
+
+# Disable dropdowns if accent is off at startup
+toggle_time_signature_state()
 
 window.mainloop()
