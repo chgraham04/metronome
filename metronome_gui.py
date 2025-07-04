@@ -46,7 +46,7 @@ def on_bpm_change(val):
 # --- UI Setup ---
 window = tk.Tk()
 window.title("Metronome")
-window.geometry("450x300")
+window.geometry("400x250")  # Enough room for everything
 bg_color = "#a3b18a"
 window.configure(bg=bg_color)
 
@@ -87,22 +87,22 @@ denominator_dropdown = ttk.Combobox(ts_frame, textvariable=denominator_var, widt
                                     values=["4", "8", "16", "32"], state="readonly")
 denominator_dropdown.grid(row=0, column=2, padx=(8, 0))
 
-# --- Load Play/Pause Icons (100x100)
+# --- Load Play/Pause Icons (64x64)
 play_img = tk.PhotoImage(file="play.png")
 pause_img = tk.PhotoImage(file="pause.png")
 
-# --- Play/Pause Button (100x100)
+# --- Play/Pause Button (64x64)
 play_btn = tk.Button(
     window,
     image=play_img,
     command=toggle_metronome,
-    relief="raised",
+    relief="flat",
     borderwidth=4,
-    bg="#e0e0e0",
-    activebackground="#cfcfcf"
+    bg=bg_color,
+    activebackground=bg_color
 )
-play_btn.image = play_img  # Prevent garbage collection
-play_btn.place(relx=0.5, rely=0.75, anchor="center", width=100, height=100)
+play_btn.image = play_img
+play_btn.place(relx=0.5, rely=0.8, anchor="center", width=64, height=64)
 
 # Spacebar toggle
 window.bind("<space>", lambda e: toggle_metronome())
