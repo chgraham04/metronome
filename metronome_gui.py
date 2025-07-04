@@ -1,12 +1,16 @@
 import tkinter as tk
 from tkinter import ttk, messagebox
 import subprocess
+import os
 
 # Globals
 process = None
 bpm_value = 100
 bpm_hold_job = None
 bpm_change_direction = 0
+script_dir = os.path.dirname(os.path.abspath(__file__))
+exe_path = os.path.join(script_dir, "cmake-build-debug", "metronome_engine.exe")
+
 
 def start_metronome():
     global process
@@ -14,7 +18,7 @@ def start_metronome():
         num = int(numerator_var.get())
         denom = int(denominator_var.get())
         args = [
-            "cmake-build-debug/metronome_engine.exe",
+            exe_path,
             str(bpm_value),
             str(num),
             str(denom),

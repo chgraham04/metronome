@@ -23,4 +23,4 @@ private:
     void cleanUpAudio();
 };
 
-#endif
+#endif // METRONOME_H
