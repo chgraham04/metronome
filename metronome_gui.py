@@ -9,7 +9,7 @@ bpm_value = 100
 bpm_hold_job = None
 bpm_change_direction = 0
 script_dir = os.path.dirname(os.path.abspath(__file__))
-exe_path = os.path.join(script_dir, "cmake-build-debug", "metronome_engine.exe")
+exe_path = os.path.join(script_dir, "build", "metronome_engine.exe")
 
 
 def start_metronome():
@@ -24,7 +24,8 @@ def start_metronome():
             str(denom),
             str(int(accent_enabled.get()))
         ]
-        process = subprocess.Popen(args)
+        working_dir = os.path.dirname(exe_path)
+        process = subprocess.Popen(args, cwd=os.path.dirname(exe_path), env=os.environ.copy())
         play_btn.config(image=pause_img)
         play_btn.image = pause_img
     except Exception as e:

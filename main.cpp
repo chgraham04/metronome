@@ -3,31 +3,20 @@
 #include <cstdlib>
 #include <iostream>
 
-// int main(int argc, char* argv[]) {
-//     std::cout << "[DEBUG] Program started with " << argc << " arguments.\n";
-//
-//     if (argc < 3) {
-//         std::cerr << "Usage: ./metronome_engine <bpm> <beats-per-measure>\n";
-//         return 1;
-//     }
-//
-//     int bpm = std::atoi(argv[1]);
-//     int beatsPerMeasure = std::atoi(argv[2]);
-//
-//     std::cout << "[DEBUG] BPM: " << bpm << ", Beats per Measure: " << beatsPerMeasure << "\n";
-//
-//     int noteValue = 4;
-//     if (beatsPerMeasure == 6) noteValue = 8;
-//
-//     Metronome metro(bpm, beatsPerMeasure, noteValue);
-//
-//     std::cout << "[DEBUG] Created Metronome instance. Starting now...\n";
-//     metro.start();
-//
-//     std::cout << "[DEBUG] Exiting program.\n";
-//     return 0;
-// }
-int main() {
-    std::cout << "[DEBUG] Hello world from metronome_engine.exe\n";
+int main(int argc, char* argv[]) {
+    if (argc < 5) {
+        std::cerr << "Usage: ./metronome_engine <bpm> <beats-per-measure> <noteValue> <accentEnabled>\n";
+        return 1;
+    }
+
+    int bpm = std::atoi(argv[1]);
+    int beatsPerMeasure = std::atoi(argv[2]);
+    int noteValue = std::atoi(argv[3]);
+    bool accentEnabled = std::atoi(argv[4]);
+
+    Metronome metro(bpm, beatsPerMeasure, noteValue);
+    metro.setAccentEnabled(accentEnabled);
+    metro.start();
+
     return 0;
 }
